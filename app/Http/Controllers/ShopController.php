@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 use App\Http\Requests\StoreShopRequest;
 use App\Http\Requests\UpdateShopRequest;
+use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
@@ -13,7 +14,8 @@ class ShopController extends Controller
      */
     public function index()
     {
-        //
+        $shops = Shop::all();
+        return view('pages.shops.index', compact('shops'));
     }
 
     /**
@@ -21,15 +23,20 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //
+        $shops = Shop::all();
+        return view('pages.shops.create', compact('shops'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreShopRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['shop_id'] = $request->input('shop_name');
+        Shop::create($data);
+
+        return redirect()->route('shops.index')->with('success', 'Shop created successfully.');
     }
 
     /**
@@ -45,15 +52,16 @@ class ShopController extends Controller
      */
     public function edit(Shop $shop)
     {
-        //
+        return view('pages.shops.edit', compact('shop'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShopRequest $request, Shop $shop)
+    public function update(StoreShopRequest $request, Shop $shop)
     {
-        //
+        $shop->update($request->all());
+        return redirect()->route('shops.index')->with('success', 'Shop updated successfully.');
     }
 
     /**
@@ -61,6 +69,7 @@ class ShopController extends Controller
      */
     public function destroy(Shop $shop)
     {
-        //
+        $shop->delete();
+        return redirect()->route('shops.index')->with('success', 'Shop deleted successfully.');
     }
 }

@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Shop;
+use App\Models\Product;
 
 class ProductSeeder extends Seeder
 {
@@ -12,6 +14,8 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Shop::all()->each(function ($shop) {
+            Product::factory()->count(10)->create(['shop_id' => $shop->id]);
+        });
     }
 }

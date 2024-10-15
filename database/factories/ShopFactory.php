@@ -17,7 +17,12 @@ class ShopFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'shop_id' => $this->faker->unique()->numerify('SHOP###'),
+            'shop_name' => $this->faker->company,
+            'address' => $this->faker->address,
+            'description' => $this->faker->text(200),
+            'phone' => $this->faker->phoneNumber,
+            'email' => $this->faker->unique()->safeEmail,
         ];
     }
 }
